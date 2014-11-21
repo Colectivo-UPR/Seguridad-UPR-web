@@ -13,7 +13,7 @@ class MyUser(models.Model):
 	Users Incidents  model
 """
 class Incident(models.Model):
-	owner = models.ForeignKey('auth.User', related_name='incidents')
+	#owner = models.ForeignKey('auth.User', related_name='incidents')
 	pub_date = models.DateTimeField('date created', auto_now_add=True)
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)

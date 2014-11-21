@@ -5,7 +5,7 @@ from core.models import Incident, Report, Phone, MyUser, Service
 class MyUserSerializer(serializers.ModelSerializer):
 
     # get the data from the user model
-    incidents = serializers.PrimaryKeyRelatedField(many=True)    
+    #incidents = serializers.PrimaryKeyRelatedField(many=True)    
     username = serializers.CharField(source='user.username')
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
@@ -14,7 +14,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('username','first_name','last_name','password','email','telephone','incidents')
+        fields = ('username','first_name','last_name','password','email','telephone')
 
     # build both models from the input data
     def restore_object(self, attrs, instance=None):
@@ -25,6 +25,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         # if the instance is not empty assign the atributes
         if instance:
+            
             instance.user.email = attrs.get('user.email', instance.user.email)
             instance.user.first_name = attrs.get('user.first_name', instance.user.first_name)
             instance.user.last_name = attrs.get('user.last_name', instance.user.last_name)
@@ -45,11 +46,11 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 class IncidentSerializer(serializers.ModelSerializer):
 
-    owner = serializers.Field(source='owner.username')
+    #owner = serializers.Field(source='owner.username')
 
     class Meta:
         model = Incident
-        fields = ('owner','title','pub_date','message','faculty','lat','lon')
+        fields = ('title','pub_date','message','faculty','lat','lon')
 
 # class NotificationSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
