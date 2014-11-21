@@ -10,21 +10,22 @@ class MyUser(models.Model):
 	telephone = models.CharField(max_length=10, blank=True, default='' )
 
 """
-	News model
+	Users Incidents  model
 """
-class News(models.Model):
+class Incident(models.Model):
+	owner = models.ForeignKey('auth.User', related_name='incidents')
+	pub_date = models.DateTimeField('date created', auto_now_add=True)
+	message = models.TextField()
+	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
-	pub_date = models.DateTimeField('date published', auto_now_add=True)
-	message= models.TextField()
 	lat = models.FloatField()
 	lon= models.FloatField()
-	building = models.CharField(max_length=200)
 
 """
-	Admin Reports  model
+	Admin Reports model
 """
 class Report(models.Model):
-	date = models.DateTimeField('date created', auto_now_add=True)
+	pub_date = models.DateTimeField('date created', auto_now_add=True)
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
@@ -35,7 +36,15 @@ class Report(models.Model):
 	Phones locations model
 """
 class Phone(models.Model):
-	lugar = models.CharField(max_length=200)
+	place = models.CharField(max_length=200)
 	description = models.TextField()
 	lat = models.FloatField()
 	lon = models.FloatField()
+
+"""
+	Service model
+"""
+class Service(models.Model):
+	name = models.CharField(max_length=200)
+	telephone = models.CharField(max_length=10, blank=False, default='')
+

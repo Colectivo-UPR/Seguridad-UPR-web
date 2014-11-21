@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from core.models import News, Report, Phone, MyUser
+from core.models import Incident, Report, Phone, MyUser, Service
 
 class MyUserSerializer(serializers.ModelSerializer):
 
-    # get the data from the user model    
+    # get the data from the user model
+    incidents = serializers.PrimaryKeyRelatedField(many=True)    
     username = serializers.CharField(source='user.username')
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
@@ -13,7 +14,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('username','first_name','last_name','password','email','telephone')
+        fields = ('username','first_name','last_name','password','email','telephone','incidents')
 
     # build both models from the input data
     def restore_object(self, attrs, instance=None):
@@ -42,10 +43,13 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         return MyUser(user=user, telephone=telephone)
 
-class NewsSerializer(serializers.ModelSerializer):
+class IncidentSerializer(serializers.ModelSerializer):
+
+    owner = serializers.Field(source='owner.username')
+
     class Meta:
-        model = News
-        fields = ('title','pub_date','message','building','lat','lon')
+        model = Incident
+        fields = ('owner','title','pub_date','message','faculty','lat','lon')
 
 # class NotificationSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -55,9 +59,14 @@ class NewsSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ('message','date','faculty','title','lat','lon')
+        fields = ('title','pub_date','message','faculty','lat','lon')
 
 class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Phone
-        fields = ('lugar','description','lat','lon')
+        fields = ('place','description','lat','lon')
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ('name','telephone')
