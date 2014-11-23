@@ -22,6 +22,9 @@ class IncidentViewSet(viewsets.ModelViewSet):
     """
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
+
+    def pre_save(self, obj):
+        obj.owner = self.request.user
     
 class PhoneViewSet(viewsets.ModelViewSet):
     """

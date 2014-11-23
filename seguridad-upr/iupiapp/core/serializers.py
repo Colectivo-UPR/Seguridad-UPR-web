@@ -5,7 +5,7 @@ from core.models import Incident, Report, Phone, MyUser, Service
 class MyUserSerializer(serializers.ModelSerializer):
 
     # get the data from the user model
-    incidents = serializers.PrimaryKeyRelatedField(many=True, source='user.incidents')    
+    incidents = serializers.RelatedField(many=True, source='user.incidents')    
     username = serializers.CharField(source='user.username')
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
@@ -31,7 +31,6 @@ class MyUserSerializer(serializers.ModelSerializer):
             instance.user.last_name = attrs.get('user.last_name', instance.user.last_name)
             instance.user.username = attrs.get('user.username', instance.user.username)
             instance.telephone = attrs.get('telephone', instance.telephone)
-            instance.user.incidents = attrs.get('incidents', instance.user.incidents)
             return instance
 
         # no instance so create the user instance
@@ -47,7 +46,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 class IncidentSerializer(serializers.ModelSerializer):
 
-    #owner = serializers.Field(source='owner.username')
+    owner = serializers.Field(source='owner.username')
 
     class Meta:
         model = Incident

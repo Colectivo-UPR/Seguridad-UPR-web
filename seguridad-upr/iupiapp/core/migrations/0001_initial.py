@@ -13,15 +13,27 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='News',
+            name='Incident',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('title', models.CharField(max_length=200)),
-                ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name=b'date published')),
+                ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name=b'date created')),
                 ('message', models.TextField()),
+                ('faculty', models.CharField(max_length=200)),
+                ('title', models.CharField(max_length=200)),
                 ('lat', models.FloatField()),
                 ('lon', models.FloatField()),
-                ('bulding', models.CharField(max_length=200)),
+                ('owner', models.ForeignKey(related_name='incidents', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MyUser',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('telephone', models.CharField(default=b'', max_length=10, blank=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -31,7 +43,7 @@ class Migration(migrations.Migration):
             name='Phone',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('lugar', models.CharField(max_length=200)),
+                ('place', models.CharField(max_length=200)),
                 ('description', models.TextField()),
                 ('lat', models.FloatField()),
                 ('lon', models.FloatField()),
@@ -44,7 +56,7 @@ class Migration(migrations.Migration):
             name='Report',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('date', models.DateTimeField(auto_now_add=True, verbose_name=b'date created')),
+                ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name=b'date created')),
                 ('message', models.TextField()),
                 ('faculty', models.CharField(max_length=200)),
                 ('title', models.CharField(max_length=200)),
@@ -56,11 +68,11 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='User',
+            name='Service',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('telephone', models.CharField(default=b'', max_length=10, blank=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('name', models.CharField(max_length=200)),
+                ('telephone', models.CharField(default=b'', max_length=10)),
             ],
             options={
             },
