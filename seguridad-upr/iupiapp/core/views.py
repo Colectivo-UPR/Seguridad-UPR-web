@@ -52,8 +52,8 @@ class IncidentList(generics.ListCreateAPIView):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
-    #def pre_save(self, obj):
-    #    obj.owner = self.request.user
+    def pre_save(self, obj):
+        obj.owner = self.request.user
 
 class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -62,8 +62,8 @@ class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Incident.objects.all()
     serializers_class = IncidentSerializer
 
-    #def pre_save(self, obj):
-    #    obj.owner = self.request.user
+    def pre_save(self, obj):
+        obj.owner = self.request.user
 
 class UserList(generics.ListAPIView):
     queryset = MyUser.objects.all()
