@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentDetail.as_view()),
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^register',views.UserRegister.as_view()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-token-auth/', authviews.obtain_auth_token)
+
 )

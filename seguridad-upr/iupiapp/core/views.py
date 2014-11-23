@@ -1,11 +1,11 @@
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics
 from core.serializers import MyUserSerializer, IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer
+from rest_framework.authentication import TokenAuthentication 
 from core.models import MyUser, Incident, Report, Phone, Service
+from core.permissions import IsOwnerOnly
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
@@ -52,6 +52,8 @@ class IncidentList(generics.ListCreateAPIView):
     """
     List all incidents or create a new incident
     """
+    permission_classes = (IsOwnerOnly,)
+    authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
@@ -62,6 +64,7 @@ class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a incident instance.
     """
+    permission_classes = (IsOwnerOnly,)
     queryset = Incident.objects.all()
     serializers_class = IncidentSerializer
 
@@ -75,4 +78,11 @@ class UserList(generics.ListAPIView):
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = MyUser.objects.all()
+    serializer_class = MyUserSerializer
+
+class UserRegister(generics.CreateAPIView):
+    """
+    Register a User
+    """
+    permission_classes = (AllowAny,)
     serializer_class = MyUserSerializer
