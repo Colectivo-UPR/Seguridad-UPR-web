@@ -23,7 +23,12 @@ urlpatterns = patterns('',
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^register',views.UserRegister.as_view()),
+    url(r'^phones/$',views.PhoneList.as_view()),
+    url(r'^phones/(?P<pk>[0-9]+)/$', views.PhoneDetail.as_view()),
+    url(r'^reports/$', views.ReportList.as_view()),
+    url(r'^reports/(?P<pk>[0-9+]+)/$', views.PhoneDetail.as_view()),
+    url(r'^services/$', views.ServiceList.as_view()),
+    url(r'^services/(?P<pk>[0-9]+)/$', views.ServiceDetail.as_view()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-token-auth/', authviews.obtain_auth_token)
-
 )
