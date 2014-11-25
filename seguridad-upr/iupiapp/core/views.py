@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics
-from core.serializers import MyUserSerializer, IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer
+from core.serializers import MyUserSerializer, IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication  
-from core.models import MyUser, Incident, Report, Phone, Service
+from core.models import MyUser, Incident, Report, Phone, Service, Alert
 from core.permissions import IsOwnerOnly
 
 # Create your views here.
@@ -42,13 +42,33 @@ class ReportViewSet(viewsets.ModelViewSet):
 
 class ServiceViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Service to be viewd or edited.
+    API endpoint that allows Service to be viewed or edited.
     """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
+class AlertViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Alert to be viewed or edited.
+    """
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer
 
-class IncidentList(generics.ListCreateAPIView):
+class IncidentCreate(generics.CreateAPIView):
+    """
+    Allow user to create incidents
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    queryset = Incident.objects.all()
+    serializer_class = IncidentSerializer
+
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+
+
+
+class IncidentList(generics.ListAPIView):
     """
     List all incidents or create a new incident
     """
@@ -57,17 +77,23 @@ class IncidentList(generics.ListCreateAPIView):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
-    def pre_save(self, obj):
-        obj.owner = self.request.user
+    def get_queryset(self):
+        """
+        This view should return only the incidents related to the user
+        making the request 
+        """
+        user = self.request.user
+        return Incident.objects.filter(owner=user)
+
 
 class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a incident instance.
     """
     permission_classes = (IsOwnerOnly, IsAuthenticated)
+    authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
-
     def pre_save(self, obj):
         obj.owner = self.request.user
 
@@ -144,3 +170,12 @@ class ServiceDetail(generics.RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+class AlertList(generics.ListAPIView):
+    """
+    Retrieve the list of alerts
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer

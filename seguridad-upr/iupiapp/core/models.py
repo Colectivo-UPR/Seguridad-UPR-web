@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -15,6 +16,7 @@ class MyUser(models.Model):
 class Incident(models.Model):
 	owner = models.ForeignKey('auth.User', related_name='incidents')
 	pub_date = models.DateTimeField('date created', auto_now_add=True)
+	incident_date = models.DateTimeField('incident date', blank=False, default=datetime.now)
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
@@ -47,4 +49,16 @@ class Phone(models.Model):
 class Service(models.Model):
 	name = models.CharField(max_length=200)
 	telephone = models.CharField(max_length=10, blank=False, default='')
+
+"""
+	Alert model
+"""
+class Alert(models.Model):
+	pub_date = models.DateTimeField('date created', auto_now_add=True)
+	incident_date = models.DateTimeField('incident date', blank=False)
+	message = models.TextField()
+	faculty = models.CharField(max_length=200)
+	title = models.CharField(max_length=200)
+	lat = models.FloatField()
+	lon= models.FloatField()
 

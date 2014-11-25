@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from core.models import Incident, Report, Phone, MyUser, Service
+from core.models import Incident, Report, Phone, MyUser, Service, Alert
 
 class MyUserSerializer(serializers.ModelSerializer):
 
@@ -50,7 +50,7 @@ class IncidentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Incident
-        fields = ('owner','title','pub_date','message','faculty','lat','lon')
+        fields = ('owner','title','pub_date','incident_date', 'message','faculty','lat','lon')
 
 # class NotificationSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -71,3 +71,8 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ('name','telephone')
+
+class AlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alert
+        fields = ('title','pub_date','incident_date', 'message','faculty','lat','lon')
