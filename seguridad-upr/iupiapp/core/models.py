@@ -1,20 +1,83 @@
 from datetime import datetime
+from iupiapp import settings
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.core.validators import RegexValidator
+
 # Create your models here.
 
+
 """
-	Django User extended model
+	Define the custom user manager class
 """
-class MyUser(models.Model):
-	user = models.OneToOneField(User)
-	telephone = models.CharField(max_length=10, blank=True, default='' )
+class AuthUserManager(BaseUserManager):
+	def create_user(self, email,password=None):
+		if not email:
+			raise ValueError(" User must have an email address")
+
+		user = self.model(email=self.normalize_email(email),)
+		user.is_active = True
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
+
+	def create_superuser(self,email,password):
+		user = self.create_user(email=email, password=password)
+		user.is_staff = True
+		user.is_superuser = True
+		user.save(using=self._db)
+		return user
+
+"""
+	New AuthUser for the app
+"""
+class AuthUser(AbstractBaseUser,PermissionsMixin):
+	alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', message='Only alphanumeric characters are allowed.')
+
+	### Redefine the basic fields that would be defined in User ###
+	email = models.EmailField(verbose_name='email address', unique=True, max_length=255)
+	first_name = models.CharField(max_length=30, null=True, blank=True)
+	last_name=models.CharField(max_length=50, null=True, blank=True)
+	date_joined = models.DateTimeField(auto_now_add=True)
+	is_active= models.BooleanField(default=True,null=False)
+	is_staff = models.BooleanField(default=False,null=False)
+
+	objects = AuthUserManager()
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = []
+
+	def get_full_name(self):
+		fullname = self.first_name +" "+ self.last_name
+		return fullname
+
+	def get_short_name(self):
+		return self.email
+
+	def __unicode__(self):
+		return self.email
+# """
+# 	Register Custom AuthUser with the Admin
+# """
+# class AuthUserAdmin(UserAdmin):
+# 	form = CustomUserChangeForm
+# 	add_form = CustomUserCreationForm
+
+# 	list_display = ('email','is_staff', 'is_superuser')
+# 	list_filter = ('is_superuser',)
+
+# 	fieldsets = (
+# 		(None, {'fields':('email','password','first_name','last_name')}),
+# 		('Permissions', {'fields':('is_active','is_superuser','is_staff')}),
+# 	)
+
 
 """
 	Users Incidents  model
 """
 class Incident(models.Model):
-	owner = models.ForeignKey('auth.User', related_name='incidents')
+	owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='incidents')
 	pub_date = models.DateTimeField('date created', auto_now_add=True)
 	incident_date = models.DateTimeField('incident date', blank=False, default=datetime.now)
 	message = models.TextField()

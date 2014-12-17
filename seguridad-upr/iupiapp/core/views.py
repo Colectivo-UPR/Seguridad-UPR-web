@@ -1,20 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import status, parsers,renderers, permissions, viewsets, generics
-from core.serializers import MyUserSerializer, IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
+from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication  
-from core.models import MyUser, Incident, Report, Phone, Service, Alert
+from core.models import     Incident, Report, Phone, Service, Alert, AuthUser
 from core.permissions import IsOwnerOnly
 
-# Create your views here.
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = MyUser.objects.all()
-    serializer_class = MyUserSerializer
 
+##########################################
+#           API Models Views             #
+#           Only Admin Users             #
+##########################################      
 
 class IncidentViewSet(viewsets.ModelViewSet):
     """
@@ -22,6 +19,8 @@ class IncidentViewSet(viewsets.ModelViewSet):
     """
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('pub_date ')
 
     def pre_save(self, obj):
         obj.owner = self.request.user
@@ -54,6 +53,128 @@ class AlertViewSet(viewsets.ModelViewSet):
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
 
+class AuthUserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoinf for the new User model
+    """
+    queryset = AuthUser.objects.all()
+    serializer_class = AuthUserSerializer
+
+##########################################
+#          Admin Views                   #
+##########################################
+
+###############################
+#          Users              #
+###############################
+
+class UserList(generics.ListAPIView):
+    """
+    List users models
+    """
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    authentication_classes = (TokenAuthentication,)
+    queryset = AuthUser.objects.all()
+    serializer_class = AuthUserSerializer
+
+class UserEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Edit users models
+    """
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    authentication_classes = (IsAuthenticated, IsAdminUser,)
+    queryset = AuthUser.objects.all()
+    serializer_class = AuthUserSerializer
+
+###############################
+#          Phones             #
+###############################
+
+class PhoneCreate(generics.CreateAPIView):
+    """
+    Create a phone
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    serializer_class = PhoneSerializer
+
+class PhoneEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Get,Edit,Delete a Report instance
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    queryset = Phone.objects.all()
+    serializer_class = PhoneSerializer
+
+###############################
+#          Alerts             #
+###############################
+
+class AlertCreate(generics.CreateAPIView):
+    """
+    Create an Alert
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    serializer_class = AlertSerializer
+
+class AlertEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Get, Edit, Delete a Alert instance
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,IsAdminUser,)
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer
+
+
+###############################
+#          Reports            #
+###############################
+
+class ReportCreate(generics.CreateAPIView):
+    """
+    Create Reports
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    serializer_class = ReportSerializer
+
+class ReportEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Get,Edit,Delete a Report instance
+    """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+
+###############################
+#          Services           #
+###############################
+
+class ServiceCreate(generics.CreateAPIView):
+    """
+    Create a service
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, IsAdminUser)
+    serializer_class = ServiceSerializer
+
+class ServiceEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Get,Edit,Delete a Service instance
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, IsAdminUser)
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+##########################################
+#      Clients/Admin and Views           #
+##########################################
+
 class IncidentCreate(generics.CreateAPIView):
     """
     Allow user to create incidents
@@ -65,7 +186,6 @@ class IncidentCreate(generics.CreateAPIView):
 
     def pre_save(self, obj):
         obj.owner = self.request.user
-
 
 
 class IncidentList(generics.ListAPIView):
@@ -97,25 +217,20 @@ class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     def pre_save(self, obj):
         obj.owner = self.request.user
 
-class UserList(generics.ListAPIView):
-    queryset = MyUser.objects.all()
-    serializer_class = MyUserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = MyUser.objects.all()
-    serializer_class = MyUserSerializer
-
-"""
-    Routes for clients with TokenAuthentication
-"""
+###############################
+#          Users              #
+###############################
 
 class UserRegister(generics.CreateAPIView):
     """
     Register a User
     """
     permission_classes = (AllowAny,)
-    serializer_class = MyUserSerializer
+    serializer_class = AuthUserSerializer
+
+###############################
+#          Phones             #
+###############################
 
 class PhoneList(generics.ListAPIView):
     """
@@ -135,6 +250,12 @@ class PhoneDetail(generics.RetrieveAPIView):
     queryset = Phone.objects.all()
     serializer_class = PhoneSerializer
 
+
+###############################
+#          Reports            #
+###############################
+
+
 class ReportList(generics.ListAPIView):
     """
     Retrieve Reports list
@@ -152,6 +273,10 @@ class ReportDetail(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
+
+###############################
+#          Services           #
+###############################
 
 class ServiceList(generics.ListAPIView):
     """
@@ -171,6 +296,10 @@ class ServiceDetail(generics.RetrieveAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
+###############################
+#          Alerts             #
+###############################
+
 class AlertList(generics.ListAPIView):
     """
     Retrieve the list of alerts
@@ -179,3 +308,15 @@ class AlertList(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
+
+class AlertDetail(generics.RetrieveAPIView):
+    """
+    Retrieve an alert detail
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer
+
+
+
