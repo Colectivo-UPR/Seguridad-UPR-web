@@ -20,7 +20,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
     filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ('pub_date ')
+    ordering_fields = ('pub_date')
 
     def pre_save(self, obj):
         obj.owner = self.request.user
@@ -193,8 +193,10 @@ class IncidentList(generics.ListAPIView):
     List all incidents or create a new incident
     """
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication,)
+    authentication_classes  = (TokenAuthentication, SessionAuthentication,)
     queryset = Incident.objects.all()
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('incident_date',)
     serializer_class = IncidentSerializer
 
     def get_queryset(self):
@@ -308,6 +310,9 @@ class AlertList(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('pub_date','incident_date')
+
 
 class AlertDetail(generics.RetrieveAPIView):
     """
