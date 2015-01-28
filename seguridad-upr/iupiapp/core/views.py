@@ -60,6 +60,14 @@ class AuthUserViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = AuthUserSerializer
 
+    def post_save(self, obj, created=False):
+        """
+        On creation, replace the raw password with a hashed version.
+        """
+        if created:
+            obj.set_password(obj.password)
+            obj.save()
+
 ##########################################
 #          Admin Views                   #
 ##########################################
@@ -179,6 +187,7 @@ class IncidentCreate(generics.CreateAPIView):
     """
     Allow user to create incidents
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
@@ -192,8 +201,9 @@ class IncidentList(generics.ListAPIView):
     """
     List all incidents or create a new incident
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
-    authentication_classes  = (TokenAuthentication, SessionAuthentication,)
+    authentication_classes  = (TokenAuthentication,)
     queryset = Incident.objects.all()
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('incident_date',)
@@ -208,10 +218,11 @@ class IncidentList(generics.ListAPIView):
         return Incident.objects.filter(owner=user)
 
 
-class IncidentDetail(generics.RetrieveUpdateDestroyAPIView):
+class IncidentDetail(generics.RetrieveAPIView):
     """
     Retrieve, update or delete a incident instance.
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsOwnerOnly, IsAuthenticated)
     authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
@@ -227,8 +238,17 @@ class UserRegister(generics.CreateAPIView):
     """
     Register a User
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (AllowAny,)
     serializer_class = AuthUserSerializer
+
+    def post_save(self, obj, created=False):
+        """
+        On creation, replace the raw password with a hashed version.
+        """
+        if created:
+            obj.set_password(obj.password)
+            obj.save()
 
 ###############################
 #          Phones             #
@@ -238,6 +258,7 @@ class PhoneList(generics.ListAPIView):
     """
     Retrive the Phones list
     """
+    renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Phone.objects.all()
@@ -247,6 +268,7 @@ class PhoneDetail(generics.RetrieveAPIView):
     """
     Retrieve a single phone detail
     """
+    renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Phone.objects.all()
@@ -262,6 +284,7 @@ class ReportList(generics.ListAPIView):
     """
     Retrieve Reports list
     """
+    renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
@@ -271,6 +294,7 @@ class ReportDetail(generics.RetrieveAPIView):
     """
     Retrieve a single report detail
     """
+    renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
@@ -284,6 +308,7 @@ class ServiceList(generics.ListAPIView):
     """
     Retrieve the list of Services
     """
+    renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Service.objects.all()
@@ -293,6 +318,7 @@ class ServiceDetail(generics.RetrieveAPIView):
     """
     Retrieve a service detail
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     queryset = Service.objects.all()
@@ -306,6 +332,7 @@ class AlertList(generics.ListAPIView):
     """
     Retrieve the list of alerts
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     queryset = Alert.objects.all()
@@ -318,6 +345,7 @@ class AlertDetail(generics.RetrieveAPIView):
     """
     Retrieve an alert detail
     """
+    renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     queryset = Alert.objects.all()

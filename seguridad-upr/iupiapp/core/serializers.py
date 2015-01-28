@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from core.models import Incident, Report, Phone, Service, Alert, AuthUser
 
 class AuthUserSerializer(serializers.ModelSerializer):
@@ -7,6 +6,11 @@ class AuthUserSerializer(serializers.ModelSerializer):
         model = AuthUser
         fields = ('id', 'email','first_name','last_name','password')
 
+    def create(self, validated_data):
+        user = AuthUser.objects.create_user(email= validated_data['email'], password=validated_data['password'])
+        user.first_name = validated_data['first_name']
+        user.last_name = validated_data['last_name']
+        return user
 
 class IncidentSerializer(serializers.ModelSerializer):
 
