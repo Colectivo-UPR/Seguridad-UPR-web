@@ -55,3 +55,4 @@ target/
 
 #Database
 *.sqlite3
+*.conf
