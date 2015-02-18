@@ -36,23 +36,30 @@ urlpatterns = patterns('',
 
     # Services
     url(r'^create-service/$', views.ServiceCreate.as_view()),
-    url(r'^edit-service/$', views.ServiceEdit.as_view()),
+    url(r'^edit-service/(?P<pk>[0-9]+)/$', views.ServiceEdit.as_view()),
 
-    # Usuario
-    url(r'^register',views.UserRegister.as_view()),
-    url(r'^edit-user',views.UserEdit.as_view()),
+    # Usuarios Staff
+    url(r'^register-staff', views.UserStaff.as_view()),
+    url(r'^edit-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
+
 
     # admin
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(router.urls)),
+
+    # Incidentes
+    url(r'^incidents/$', views.IncidentList.as_view()),
+    url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentDetail.as_view()),
     
     ###########################
     #  Routes for all users   #
     ###########################
 
-    # Incidentes
+    #Usuarios
+    url(r'^register',views.UserRegister.as_view()),
+
+    #Incidentes
     url(r'^create-incident', views.IncidentCreate.as_view()),
-    url(r'^incidents/$', views.IncidentList.as_view()),
 
     # Telefonos
     url(r'^phones/$',views.PhoneList.as_view()),

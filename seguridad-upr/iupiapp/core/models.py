@@ -15,7 +15,7 @@ from django.core.validators import RegexValidator
 class AuthUserManager(BaseUserManager):
 	def create_user(self, email,password=None):
 		if not email:
-			raise ValueError(" User must have an email address")
+			raise ValueError("User must have an email address")
 
 		user = self.model(email=self.normalize_email(email),)
 		user.is_active = True
@@ -27,6 +27,7 @@ class AuthUserManager(BaseUserManager):
 		user = self.create_user(email=email, password=password)
 		user.is_staff = True
 		user.is_superuser = True
+		user.is_webadmin = True
 		user.save(using=self._db)
 		return user
 
@@ -43,6 +44,7 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 	date_joined = models.DateTimeField(auto_now_add=True)
 	is_active= models.BooleanField(default=True,null=False)
 	is_staff = models.BooleanField(default=False,null=False)
+	is_webadmin = models.BooleanField(default=False,null=False)
 
 	objects = AuthUserManager()
 	USERNAME_FIELD = 'email'
