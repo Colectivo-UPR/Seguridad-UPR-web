@@ -40,7 +40,8 @@ urlpatterns = patterns('',
 
     # Usuarios Staff
     url(r'^register-staff', views.UserStaff.as_view()),
-    url(r'^edit-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
+    url(r'^edit-staff-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
+    url(r'^staff-users/$',views.UserList.as_view()),
 
 
     # admin
