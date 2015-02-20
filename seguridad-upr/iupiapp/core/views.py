@@ -102,7 +102,7 @@ class UserList(generics.ListAPIView):
     List users models
     """
     renderer_classes = (renderers.JSONRenderer,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
     queryset = AuthUser.objects.filter(is_staff= True).exclude(is_superuser=True)
     serializer_class = AuthUserSerializer
@@ -113,7 +113,7 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     Edit users models
     """
     renderer_classes = (renderers.JSONRenderer,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
     queryset = AuthUser.objects.filter(is_staff= True).exclude(is_superuser=True)
     serializer_class = AuthUserSerializer
@@ -128,7 +128,7 @@ class PhoneCreate(generics.CreateAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     serializer_class = PhoneSerializer
 
 class PhoneEdit(generics.RetrieveUpdateDestroyAPIView):
@@ -137,7 +137,7 @@ class PhoneEdit(generics.RetrieveUpdateDestroyAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     queryset = Phone.objects.all()
     serializer_class = PhoneSerializer
 
@@ -151,7 +151,7 @@ class AlertCreate(generics.CreateAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     serializer_class = AlertSerializer
 
 class AlertEdit(generics.RetrieveUpdateDestroyAPIView):
@@ -160,7 +160,7 @@ class AlertEdit(generics.RetrieveUpdateDestroyAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,IsAdminUser,)
+    permission_classes = (IsAuthenticated,IsWebAdmin,)
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
 
@@ -174,7 +174,7 @@ class ReportCreate(generics.CreateAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     serializer_class = ReportSerializer
 
 class ReportEdit(generics.RetrieveUpdateDestroyAPIView):
@@ -183,7 +183,7 @@ class ReportEdit(generics.RetrieveUpdateDestroyAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
@@ -197,7 +197,7 @@ class ServiceCreate(generics.CreateAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, IsAdminUser)
+    authentication_classes = (TokenAuthentication, IsWebAdmin,)
     serializer_class = ServiceSerializer
 
 class ServiceEdit(generics.RetrieveUpdateDestroyAPIView):
@@ -206,7 +206,7 @@ class ServiceEdit(generics.RetrieveUpdateDestroyAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, IsAdminUser)
+    authentication_classes = (TokenAuthentication, IsWebAdmin,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -232,7 +232,7 @@ class IncidentList(generics.ListAPIView):
     List all incidents or create a new incident
     """
     renderer_classes = (renderers.JSONRenderer,)
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes  = (TokenAuthentication,)
     queryset = Incident.objects.all()
     filter_backends = (filters.OrderingFilter,)
@@ -244,7 +244,7 @@ class IncidentDetail(generics.RetrieveAPIView):
     Retrieve a incident instance.
     """
     renderer_classes = (renderers.JSONRenderer,)
-    permission_classes = (IsOwnerOnly, IsAuthenticated)
+    permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
