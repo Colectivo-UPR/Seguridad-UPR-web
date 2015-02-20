@@ -104,7 +104,7 @@ class UserList(generics.ListAPIView):
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
-    queryset = AuthUser.objects.filter(is_staff= True).exclude(is_superuser=True)
+    queryset = AuthUser.objects.filter(is_webadmin= True).exclude(is_staff=True)
     serializer_class = AuthUserSerializer
 
 # Edit Staff Users
@@ -115,7 +115,7 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
-    queryset = AuthUser.objects.filter(is_staff= True).exclude(is_superuser=True)
+    queryset = AuthUser.objects.filter(is_iswebadmin= True).exclude(is_staff=True)
     serializer_class = AuthUserSerializer
 
 ###############################
