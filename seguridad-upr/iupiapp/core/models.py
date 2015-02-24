@@ -85,8 +85,8 @@ class Incident(models.Model):
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
-	lat = models.FloatField()
-	lon= models.FloatField()
+	lat = models.FloatField(blank=True, default=18.407633)
+	lon= models.FloatField(blank=True, default=66.044355)
 
 """
 	Admin Reports model
@@ -96,8 +96,8 @@ class Report(models.Model):
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
-	lat = models.FloatField()
-	lon= models.FloatField()
+	lat = models.FloatField(blank=True, default=18.407633)
+	lon= models.FloatField(blank=True, default=66.044355)
 
 """
 	Phones locations model
@@ -105,8 +105,8 @@ class Report(models.Model):
 class Phone(models.Model):
 	place = models.CharField(max_length=200)
 	description = models.TextField()
-	lat = models.FloatField()
-	lon = models.FloatField()
+	lat = models.FloatField(blank=True, default=18.407633)
+	lon= models.FloatField(blank=True, default=66.044355)
 
 """
 	Service model
@@ -124,6 +124,6 @@ class Alert(models.Model):
 	message = models.TextField()
 	faculty = models.CharField(max_length=200)
 	title = models.CharField(max_length=200)
-	lat = models.FloatField()
-	lon= models.FloatField()
+	lat = models.FloatField(blank=True, default=18.407633)
+	lon= models.FloatField(blank=True, default=66.044355)
 
