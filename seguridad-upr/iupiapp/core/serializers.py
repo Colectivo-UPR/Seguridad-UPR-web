@@ -41,10 +41,10 @@ class AlertSerializer(serializers.ModelSerializer):
         model = Alert
         fields = ('id', 'title','pub_date','incident_date', 'message','faculty','lat','lon')
 
-class OfficialsPhones(serializers.ModelSerializer):
+class OfficialsPhonesSerializer(serializers.ModelSerializer):
 
-    official_id = serializers.Field(source='official_id.id')
+    official = serializers.PrimaryKeyRelatedField(many=False)
 
     class Meta:
         model = OfficialsPhones
-        fields = ('id', 'official_id', 'phone_number')
+        fields = ('id', 'official', 'phone_number')

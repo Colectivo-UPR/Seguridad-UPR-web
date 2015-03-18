@@ -12,6 +12,7 @@ router.register(r'reportes', views.ReportViewSet)
 router.register(r'servicios', views.ServiceViewSet)
 router.register(r'alertas', views.AlertViewSet)
 router.register(r'userauth',views.AuthUserViewSet)
+router.register(r'officialsphones',views.OfficialsPhonesViewSet)
 
 urlpatterns = patterns('',
     # Examples:
@@ -51,6 +52,11 @@ urlpatterns = patterns('',
     # Incidentes
     url(r'^incidents/$', views.IncidentList.as_view()),
     url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentDetail.as_view()),
+
+    # OfficialPhones
+    url(r'^create-official-phone', views.OfficialPhoneCreate.as_view()),
+    url(r'^official-phones', views.OfficialPhonesList.as_view()),
+    url(r'edit-official-phone/(?P<pk>[0-9]+)/$', views.OfficialPhonesEdit.as_view()),
     
     ###########################
     #  Routes for all users   #

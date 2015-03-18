@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
 from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, OfficialsPhonesSerializer
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication  
-from core.models import     Incident, Report, Phone, Service, Alert, AuthUser
+from core.models import     Incident, Report, Phone, Service, Alert, AuthUser, OfficialsPhones
 from core.permissions import IsOwnerOnly,IsWebAdmin
 
 
@@ -55,7 +55,7 @@ class AlertViewSet(viewsets.ModelViewSet):
 
 class AuthUserViewSet(viewsets.ModelViewSet):
     """
-    API endpoinf for the new User model
+    API endpoint for the new User model
     """
     queryset = AuthUser.objects.all()
     serializer_class = AuthUserSerializer
@@ -67,6 +67,13 @@ class AuthUserViewSet(viewsets.ModelViewSet):
         if created:
             obj.set_password(obj.password)
             obj.save()
+
+class OfficialsPhonesViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for the OfficialPhones Model
+    """
+    queryset = OfficialsPhones.objects.all()
+    serializer_class = OfficialsPhonesSerializer
 
 ##########################################
 #          Admin Views                   #
@@ -140,6 +147,8 @@ class PhoneEdit(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsWebAdmin,)
     queryset = Phone.objects.all()
     serializer_class = PhoneSerializer
+
+
 
 ###############################
 #          Alerts             #
@@ -223,6 +232,26 @@ class OfficialPhoneCreate(generics.CreateAPIView):
     authentication_classes = (TokenAuthentication, IsWebAdmin,)
     serializer_class = OfficialsPhonesSerializer
 
+class OfficialPhonesList(generics.ListAPIView):
+    """
+    List Officials Phones
+    """
+
+    redenderer_classes = (renderers.JSONRenderer,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, IsWebAdmin,)
+    queryset = OfficialsPhones.objects.all()
+    serializer_class = OfficialsPhonesSerializer
+
+class OfficialPhonesEdit(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Modify the officials phones
+    """
+    renderer_classes = (renderers.JSONRenderer,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, IsWebAdmin,)
+    queryset = OfficialsPhones.objects.all()
+    serializer_class = OfficialsPhonesSerializer
 ##########################################
 #      Clients/Admin and Views           #
 ##########################################

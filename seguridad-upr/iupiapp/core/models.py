@@ -131,5 +131,5 @@ class Alert(models.Model):
 	Security Oficials
 """
 class OfficialsPhones(models.Model):
-	official_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='phone')
+	official = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='phone', null=True)
 	phone_number = models.CharField(max_length=10, blank=False, default='') 
