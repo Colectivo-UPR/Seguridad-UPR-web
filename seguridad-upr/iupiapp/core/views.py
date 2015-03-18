@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
-from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer
+from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, OfficialsPhonesSerializer
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication  
 from core.models import     Incident, Report, Phone, Service, Alert, AuthUser
 from core.permissions import IsOwnerOnly,IsWebAdmin
@@ -210,6 +210,19 @@ class ServiceEdit(generics.RetrieveUpdateDestroyAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
+###############################
+#     Officials Phones        #
+###############################
+
+class OfficialPhoneCreate(generics.CreateAPIView):
+    """
+    Create an Official Phone
+    """
+    renderer_classes = (renderers.JSONRenderer,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, IsWebAdmin,)
+    serializer_class = OfficialsPhonesSerializer
+
 ##########################################
 #      Clients/Admin and Views           #
 ##########################################
@@ -367,6 +380,7 @@ class AlertDetail(generics.RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
+
 
 
 

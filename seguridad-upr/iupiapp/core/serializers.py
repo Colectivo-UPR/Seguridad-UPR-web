@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Incident, Report, Phone, Service, Alert, AuthUser
+from core.models import Incident, Report, Phone, Service, Alert, AuthUser, OfficialsPhones
 
 class AuthUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
 class IncidentSerializer(serializers.ModelSerializer):
 
-    owner = serializers.Field(source='owner.email')
+    owner = serializers.Field(source='owner.id')
 
     class Meta:
         model = Incident
@@ -40,3 +40,11 @@ class AlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alert
         fields = ('id', 'title','pub_date','incident_date', 'message','faculty','lat','lon')
+
+class OfficialsPhones(serializers.ModelSerializer):
+
+    official_id = serializers.Field(source='official_id.id')
+
+    class Meta:
+        model = OfficialsPhones
+        fields = ('id', 'official_id', 'phone_number')

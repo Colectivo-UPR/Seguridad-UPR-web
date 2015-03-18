@@ -127,3 +127,9 @@ class Alert(models.Model):
 	lat = models.FloatField(blank=True, default=18.407633)
 	lon= models.FloatField(blank=True, default=66.044355)
 
+"""
+	Security Oficials
+"""
+class OfficialsPhones(models.Model):
+	official_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='phone')
+	phone_number = models.CharField(max_length=10, blank=False, default='') 
