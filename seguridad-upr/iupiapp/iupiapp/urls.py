@@ -1,8 +1,16 @@
+# django
+from django.contrib import admin
 from django.conf.urls import patterns, include, url
+
+# rest_framework
 from rest_framework.authtoken import views as authviews
 from rest_framework import routers
+
+#allauth
+from allauth.account.views import ConfirmEmailView
+
+# project
 from core import views
-from django.contrib import admin
 
 router = routers.DefaultRouter()
 # router.register(r'usuarios', views.UserViewSet)
@@ -86,5 +94,10 @@ urlpatterns = patterns('',
     
     # Authenticacion
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/', authviews.obtain_auth_token)
+    url(r'^api-token-auth/', authviews.obtain_auth_token),
+
+    # Django All Auth
+    url(r'^account/', include('allauth.urls')),
+    url(r'^account-confirm-email/(?P<key>\w+)/$', ConfirmEmailView.as_view()    , name='account_confirm_email'),
+    url(r'^account/email-confirmation-success/',views.ConfirmationSuccess.as_view()),
 )

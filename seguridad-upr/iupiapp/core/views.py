@@ -1,9 +1,15 @@
+# django
+from django.views.generic import TemplateView
+
+# rest_framework
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+
+# project
 from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, OfficialsPhonesSerializer
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication  
 from core.models import     Incident, Report, Phone, Service, Alert, AuthUser, OfficialsPhones
 from core.permissions import IsOwnerOnly,IsWebAdmin
 
@@ -411,5 +417,8 @@ class AlertDetail(generics.RetrieveAPIView):
     serializer_class = AlertSerializer
 
 
-
-
+##################################
+#       Confirmation Success     #
+##################################
+class ConfirmationSuccess(TemplateView):
+    template_name= "confirmation_success.html"

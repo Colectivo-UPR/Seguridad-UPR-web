@@ -53,6 +53,9 @@ docs/_build/
 # PyBuilder
 target/
 
-#Database
+#Database-Conf
 *.sqlite3
 *.conf
+
+#Email-Conf
+email_settings.py

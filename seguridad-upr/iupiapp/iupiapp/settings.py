@@ -21,11 +21,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'tn2*&07_36snj#9ovw+_*ec8u*d2s2md$9hd%q2r_3(y0-+%&e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
+)
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 # Use Custom User Model
 AUTH_USER_MODEL = 'core.AuthUser'
@@ -39,10 +54,16 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'core',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
+    'bootstrapform',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Templates directory
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10
@@ -127,3 +151,16 @@ CORS_ALLOW_HEADERS = (
         'authorization',
         'x-csrftoken'
     )
+
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/account/email/'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
+try:
+    from email_settings import *
+except ImportError:
+    pass

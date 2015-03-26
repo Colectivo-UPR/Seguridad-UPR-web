@@ -1,10 +1,17 @@
+# python
 from datetime import datetime
 from iupiapp import settings
+
+#django
 from django.db import models
 from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.core.validators import RegexValidator
+from django.dispatch import receiver
+
+# allauth
+from allauth.account.signals import email_confirmed
 
 # Create your models here.
 
@@ -18,15 +25,17 @@ class AuthUserManager(BaseUserManager):
 			raise ValueError("User must have an email address")
 
 		user = self.model(email=self.normalize_email(email),)
-		user.is_active = True
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 
 	def create_superuser(self,email,password):
 		user = self.create_user(email=email, password=password)
+		user.is_active = True
 		user.is_staff = True
 		user.is_superuser = True
+		user.is_webdirector = True
+		user.is_webmanager = True
 		user.is_webadmin = True
 		user.save(using=self._db)
 		return user
@@ -39,11 +48,16 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 	### Redefine the basic fields that would be defined in User ###
 	email = models.EmailField(verbose_name='email address', unique=True, max_length=255)
+	username = models.CharField(verbose_name='username', max_length=30, blank=True, default="")
 	first_name = models.CharField(max_length=30, null=True, blank=True)
 	last_name=models.CharField(max_length=50, null=True, blank=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
-	is_active= models.BooleanField(default=True,null=False)
+	is_active= models.BooleanField(default=False,null=False)
 	is_staff = models.BooleanField(default=False,null=False)
+
+	# custom fields
+	is_webdirector = models.BooleanField(default=False,null=False)
+	is_webmanager = models.BooleanField(default=False,null=False)
 	is_webadmin = models.BooleanField(default=False,null=False)
 
 	objects = AuthUserManager()
@@ -59,20 +73,17 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 	def __unicode__(self):
 		return self.email
-# """
-# 	Register Custom AuthUser with the Admin
-# """
-# class AuthUserAdmin(UserAdmin):
-# 	form = CustomUserChangeForm
-# 	add_form = CustomUserCreationForm
 
-# 	list_display = ('email','is_staff', 'is_superuser')
-# 	list_filter = ('is_superuser',)
 
-# 	fieldsets = (
-# 		(None, {'fields':('email','password','first_name','last_name')}),
-# 		('Permissions', {'fields':('is_active','is_superuser','is_staff')}),
-# 	)
+@receiver(email_confirmed)
+def email_confirmed_(request, email_address, **kwargs):
+
+    try:
+    	user = AuthUser.objects.get(email=email_address.email)
+    	user.is_active = True
+    	user.save()
+    except AuthUser.DoesNotExist:
+    	pass
 
 
 """

@@ -43,7 +43,7 @@ class AlertSerializer(serializers.ModelSerializer):
 
 class OfficialsPhonesSerializer(serializers.ModelSerializer):
 
-    official = serializers.PrimaryKeyRelatedField(many=False)
+    official = serializers.PrimaryKeyRelatedField(queryset=AuthUser.objects.all())
 
     class Meta:
         model = OfficialsPhones
