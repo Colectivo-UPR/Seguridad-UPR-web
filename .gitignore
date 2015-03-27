@@ -57,5 +57,5 @@ target/
 *.sqlite3
 *.conf
 
-#Email-Conf
-email_settings.py
+#Private-Conf
+private_settings.py

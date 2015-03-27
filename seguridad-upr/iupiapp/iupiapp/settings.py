@@ -17,13 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'tn2*&07_36snj#9ovw+_*ec8u*d2s2md$9hd%q2r_3(y0-+%&e'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -161,6 +158,6 @@ except ImportError:
     pass
 
 try:
-    from email_settings import *
+    from private_settings import *
 except ImportError:
     pass
