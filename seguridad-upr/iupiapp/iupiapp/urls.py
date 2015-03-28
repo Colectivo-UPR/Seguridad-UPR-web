@@ -96,12 +96,13 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-token-auth/', authviews.obtain_auth_token),
 
-    # Django All Auth
-    url(r'^account/', include('allauth.urls')),
-    url(r'^account-confirm-email/(?P<key>\w+)/$', ConfirmEmailView.as_view()    , name='account_confirm_email'),
-    url(r'^account/email-confirmation-success/',views.ConfirmationSuccess.as_view()),
 
     # Django Rest Auth
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+
+    # Django All Auth
+    url(r'^account/', include('allauth.urls')),
+    url(r'^account-confirm-email/(?P<key>\w+)/$', ConfirmEmailView.as_view(), name='account_confirm_email'),
+    url(r'^account/email-confirmation-success/',views.ConfirmationSuccess.as_view()),
 )
