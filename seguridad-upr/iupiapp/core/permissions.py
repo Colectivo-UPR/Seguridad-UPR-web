@@ -15,4 +15,12 @@ class IsWebAdmin(permissions.BasePermission):
 	"""
 
 	def has_permission(self, request,view):
-		return request.user and request.user.is_webadmin
+		return request.user and request.user.is_official
+
+class IsDirector(permissions.BasePermission):
+	"""
+	Allow access to only Director
+	"""
+
+	def has_permission(self, request,view):
+		return request.user and request.user.is_director

@@ -12,15 +12,15 @@ from allauth.account.views import ConfirmEmailView
 # project
 from core import views
 
-router = routers.DefaultRouter()
-# router.register(r'usuarios', views.UserViewSet)
-router.register(r'incidentes', views.IncidentViewSet)
-router.register(r'telefonos', views.PhoneViewSet)
-router.register(r'reportes', views.ReportViewSet)
-router.register(r'servicios', views.ServiceViewSet)
-router.register(r'alertas', views.AlertViewSet)
-router.register(r'userauth',views.AuthUserViewSet)
-router.register(r'officialsphones',views.OfficialsPhonesViewSet)
+# router = routers.DefaultRouter()
+# # router.register(r'usuarios', views.UserViewSet)
+# router.register(r'incidentes', views.IncidentViewSet)
+# router.register(r'telefonos', views.PhoneViewSet)
+# router.register(r'reportes', views.ReportViewSet)
+# router.register(r'servicios', views.ServiceViewSet)
+# router.register(r'alertas', views.AlertViewSet)
+# router.register(r'userauth',views.AuthUserViewSet)
+# router.register(r'officialsphones',views.OfficialsPhonesViewSet)
 
 urlpatterns = patterns('',
     # Examples:
@@ -48,14 +48,15 @@ urlpatterns = patterns('',
     url(r'^edit-service/(?P<pk>[0-9]+)/$', views.ServiceEdit.as_view()),
 
     # Usuarios Staff
-    url(r'^register-staff', views.UserStaff.as_view()),
+    # url(r'^register-staff', views.UserStaff.as_view()),
     url(r'^edit-staff-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
     url(r'^staff-users/$',views.UserList.as_view()),
+    url(r'^staff-permissions/(?P<user_email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', views.staff_permissions),
 
 
     # admin
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(router.urls)),
+    # url(r'^', include(router.urls)),
 
     # Incidentes
     url(r'^incidents/$', views.IncidentList.as_view()),
@@ -64,14 +65,14 @@ urlpatterns = patterns('',
     # OfficialPhones
     url(r'^create-official-phone', views.OfficialPhoneCreate.as_view()),
     url(r'^official-phones', views.OfficialPhonesList.as_view()),
-    url(r'edit-official-phone/(?P<pk>[0-9]+)/$', views.OfficialPhonesEdit.as_view()),
+    url(r'^edit-official-phone/(?P<pk>[0-9]+)/$', views.OfficialPhonesEdit.as_view()),
     
     ###########################
     #  Routes for all users   #
     ###########################
 
     #Usuarios
-    url(r'^register',views.UserRegister.as_view()),
+    # url(r'^register',views.UserRegister.as_view()),
 
     #Incidentes
     url(r'^create-incident', views.IncidentCreate.as_view()),
@@ -93,15 +94,19 @@ urlpatterns = patterns('',
     url(r'^alerts/(?P<pk>[0-9]+)/$', views.AlertDetail.as_view()),
     
     # Authenticacion
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/', authviews.obtain_auth_token),
+    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # url(r'^api-token-auth/', authviews.obtain_auth_token),
+    
+    # Django Rest Auth
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^', include('django.contrib.auth.urls')),
 
     # Django All Auth
     url(r'^account/', include('allauth.urls')),
     url(r'^account-confirm-email/(?P<key>\w+)/$', ConfirmEmailView.as_view()    , name='account_confirm_email'),
     url(r'^account/email-confirmation-success/',views.ConfirmationSuccess.as_view()),
 
-    # Django Rest Auth
-    url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    # Docs
+    url(r'^docs/', include('rest_framework_swagger.urls')),
 )

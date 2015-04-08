@@ -16,12 +16,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-TEMPLATE_DEBUG = False
-
 ALLOWED_HOSTS = ['*']
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -61,6 +55,7 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'bootstrapform',
     'bootstrap3',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (

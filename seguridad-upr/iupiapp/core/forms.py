@@ -19,7 +19,7 @@ class AuthUserCreationForm(UserCreationForm):
 
 	def save(self, commit=True):
 		# Save the provided password in hashed format
-		user = super(AuthCreationForm, self).save(commit=False)
+		user = super(UserCreationForm, self).save(commit=False)
 		user.set_password(self.cleaned_data["password1"])
 		if commit:
 			user.save()
@@ -32,7 +32,7 @@ class AuthUserChangeForm(UserChangeForm):
 
 	class Meta(UserChangeForm.Meta):
 		model = AuthUser
-		fields = ('username', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'is_webdirector', 'is_webmanager', 'is_webadmin', 'user_permissions')
+		fields = ('username', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'is_director', 'is_shift_manager', 'is_official', 'user_permissions')
 
 		def clean_password(self):
 			return self.initial["password"]

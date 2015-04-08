@@ -5,12 +5,18 @@ class AuthUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
         fields = ('id', 'email','first_name','last_name','password')
-
+        write_only_fields = ('password',)
     def create(self, validated_data):
         user = AuthUser.objects.create_user(email= validated_data['email'], password=validated_data['password'])
         user.first_name = validated_data['first_name']
         user.last_name = validated_data['last_name']
         return user
+
+class AuthUserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthUser
+        fields = ('username','email','first_name','last_name')
+
 
 class IncidentSerializer(serializers.ModelSerializer):
 

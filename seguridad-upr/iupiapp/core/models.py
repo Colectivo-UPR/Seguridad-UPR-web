@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # python
 from datetime import datetime
 from iupiapp import settings
@@ -34,9 +35,9 @@ class AuthUserManager(BaseUserManager):
 		user.is_active = True
 		user.is_staff = True
 		user.is_superuser = True
-		user.is_webdirector = True
-		user.is_webmanager = True
-		user.is_webadmin = True
+		user.is_director = True
+		user.is_shiftmanager = True
+		user.is_official = True
 		user.save(using=self._db)
 		return user
 
@@ -56,9 +57,9 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 	is_staff = models.BooleanField(default=False,null=False)
 
 	# custom fields
-	is_webdirector = models.BooleanField(default=False,null=False)
-	is_webmanager = models.BooleanField(default=False,null=False)
-	is_webadmin = models.BooleanField(default=False,null=False)
+	is_director = models.BooleanField(default=False,null=False)
+	is_shift_manager = models.BooleanField(default=False,null=False)
+	is_official = models.BooleanField(default=False,null=False)
 
 	objects = AuthUserManager()
 	USERNAME_FIELD = 'email'
@@ -74,7 +75,7 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 	def __unicode__(self):
 		return self.email
 
-
+# django allauth signal to set user active on email confirmation
 @receiver(email_confirmed)
 def email_confirmed_(request, email_address, **kwargs):
 
@@ -124,7 +125,7 @@ class Phone(models.Model):
 """
 class Service(models.Model):
 	name = models.CharField(max_length=200)
-	telephone = models.CharField(max_length=10, blank=False, default='')
+	telephone = models.CharField(max_length=20, blank=False, default='')
 
 """
 	Alert model
@@ -143,4 +144,84 @@ class Alert(models.Model):
 """
 class OfficialsPhones(models.Model):
 	official = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='phone', null=True)
-	phone_number = models.CharField(max_length=10, blank=False, default='') 
+	phone_number = models.CharField(max_length=10, blank=False, default='')
+
+
+"""
+	Sancion_arresto
+"""
+
+# class SancionArresto(models.Model):
+	
+# 	VPD 	= '0' # Violacion a la Politica Uso de Drogas
+# 	VPA 	= '1' # Violacion a la Politica Uso de Alcohol
+# 	OTROS 	= '2' # Otros
+
+# 	SANCION_ARRESTO_TYPE_CHOICES = (
+# 		)
+
+	# tipo = models.CharField(max_length=1,choices=SANCION_ARRESTO_TYPE_CHOICES,default=OTROS)
+
+"""
+	Tipo_Incidente
+"""
+
+# class TipoIncidente(models.Model):
+
+# 	ASEHOM 		= '0' # Asesinato/Homicidio
+# 	HOMN 		= '1' # Homicidio negligente
+# 	AGRS 		= '2' # Agresión sexual (forzada)
+# 	AGRSNF		= '3' # Agresión sexual (no forzada)
+# 	AGR 		= '4' # Agresión
+# 	AGRA 		= '5' # Agresión agravada
+# 	AME    		= '6' # Amenaza
+# 	ROB 		= '7' # Robo
+# 	ESC     	= '8' # Escalamiento
+# 	ESCA 		= '9' # Escalamiento agravado
+# 	HURVM		= '10' # Hurto vehículo de motor
+# 	INC 		= '11' # Incendio
+# 	APRI 		= '12' # Apropiación ilegal
+# 	AMEE 		= '13' # Amenaza de Explosivos
+# 	DANP 		= '14' # Daño a la propiedad
+# 	ACE 		= '15' # Acecho
+# 	VIOD 		= '16' # Violencia Doméstica
+# 	VIOC 		= '17' # Violencia en citas
+# 	OTROS 		= '18' # otros
+
+# 	INCIDENTES_TYPE_CHOICES = (
+
+# 			(ASEHOM, "Asesinato/Homicidio"),
+# 			(HOMN, "Homicidio negligente"),
+# 			(AGRS, "Agresión sexual (forzada)"),
+# 			(AGRSNF, "Agresión sexual (no forzada)"),
+# 			(AGR, "Agresión"),
+# 			(AGRA, "Agresión agravada"),
+# 			(AME, "Amenaza"),
+# 			(ROB, "Robo"),
+# 			(ESC, "Escalamiento"),
+# 			(ESCA, "Escalamiento agravado"),
+# 			(HURVM,"Hurto vehículo de motor"),
+# 			(INC, "Incendio"),
+# 			(APRI,"Apropiación Ilegal")
+# 			(AMEE,)
+
+
+# 		)
+
+
+# """
+# Asesinato/Homicidio, Homicidio negligente, Agresión sexual
+# (forzada), Agresión sexual (no forzada), Agresión, Agresión agravada,
+# Amenaza, Robo, Escalamiento, Escalamiento agravado, Hurto vehículo de
+# motor, Incendio, Apropiación ilegal, Amenaza de Explosivos, Daño a la
+# propiedad, Acecho, Violencia Doméstica, Violencia en citas, otros)
+# """
+
+
+
+"""
+	Querellas
+"""
+
+#class Querella(models.Model):
+

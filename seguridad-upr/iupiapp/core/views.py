@@ -1,3 +1,6 @@
+# python
+import json
+
 # django
 from django.views.generic import TemplateView
 
@@ -7,11 +10,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, renderer_classes
+from rest_framework import status
 
 # project
-from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, OfficialsPhonesSerializer
+from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, AuthUserDetailSerializer, OfficialsPhonesSerializer
 from core.models import     Incident, Report, Phone, Service, Alert, AuthUser, OfficialsPhones
-from core.permissions import IsOwnerOnly,IsWebAdmin
+from core.permissions import IsOwnerOnly,IsWebAdmin, IsDirector
 
 
 ##########################################
@@ -106,7 +111,7 @@ class UserStaff(generics.CreateAPIView):
         """
         if created:
             obj.set_password(obj.password)
-            obj.is_webadmin = True
+            obj.is_official = True
             obj.save()
 
 # View Staff Users
@@ -117,7 +122,7 @@ class UserList(generics.ListAPIView):
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
-    queryset = AuthUser.objects.filter(is_webadmin= True).exclude(is_staff=True)
+    queryset = AuthUser.objects.filter(is_official= True).exclude(is_staff=True)
     serializer_class = AuthUserSerializer
 
 # Edit Staff Users
@@ -128,8 +133,52 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
     authentication_classes = (TokenAuthentication,)
-    queryset = AuthUser.objects.filter(is_webadmin= True).exclude(is_staff=True)
-    serializer_class = AuthUserSerializer
+    queryset = AuthUser.objects.filter(is_official= True).exclude(is_staff=True)
+    serializer_class = AuthUserDetailSerializer
+
+# Modify user permission
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsDirector])
+@renderer_classes([renderers.JSONRenderer])
+def staff_permissions(request,user_email):
+    """
+    Assign user staff permissions
+    """
+    try:
+        # Validate exist user with email
+        user = AuthUser.objects.get(email=user_email)
+
+    except AuthUser.DoesNotExist:
+        # return not user found
+        return Response({"non_field_errors": "email provided not match a valid user"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # validate json data
+        json_data = json.loads(request.body)
+
+    except ValueError as e:
+        return Response({"non_field_errors": "Invalid json format: %s" % e},status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # check all values of the json are bool type and that the keys are correct.
+        if type(json_data['is_director']) and type(json_data['is_shift_manager']) and type(json_data['is_official'])  == bool:
+
+            # Update the user permissions
+            user.is_director = json_data['is_director']
+            user.is_shift_manager = json_data['is_shift_manager']
+            user.is_official = json_data['is_official']
+            user.save()
+
+        else:
+            raise KeyError("JSON keys values must be <bool> type")
+        
+    except KeyError as e:
+        # Return Error message
+        
+        return Response({"non_field_errors": 'Invalid json keys:values: "is_director": <bool>,"is_shift_manager": <bool>,"is_official": <bool>' % e},status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({"result":"ok"}, status=status.HTTP_200_OK)
 
 ###############################
 #          Phones             #
@@ -422,3 +471,5 @@ class AlertDetail(generics.RetrieveAPIView):
 ##################################
 class ConfirmationSuccess(TemplateView):
     template_name= "confirmation_success.html"
+
+
