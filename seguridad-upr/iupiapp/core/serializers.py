@@ -17,6 +17,8 @@ class AuthUserDetailSerializer(serializers.ModelSerializer):
         model = AuthUser
         fields = ('username','email','first_name','last_name')
 
+        read_only_fields = ('email',)
+
 
 class IncidentSerializer(serializers.ModelSerializer):
 
