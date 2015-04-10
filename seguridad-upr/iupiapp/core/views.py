@@ -11,11 +11,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status, parsers,renderers, permissions, viewsets, generics, filters
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, renderer_classes
-from rest_framework import status
+from rest_framework import status, mixins
 
 # project
-from core.serializers import IncidentSerializer, ReportSerializer, PhoneSerializer, ServiceSerializer, AlertSerializer, AuthUserSerializer, AuthUserDetailSerializer, OfficialsPhonesSerializer
-from core.models import     Incident, Report, Phone, Service, Alert, AuthUser, OfficialsPhones
+from core.serializers import *
+from core.models import *
 from core.permissions import IsOwnerOnly,IsWebAdmin, IsDirector
 
 
@@ -178,7 +178,7 @@ def staff_permissions(request,user_email):
         
         return Response({"non_field_errors": 'Invalid json keys:values: "is_director": <bool>,"is_shift_manager": <bool>,"is_official": <bool>' % e},status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({"result":"ok"}, status=status.HTTP_200_OK)
+    return Response({"details":"ok"}, status=status.HTTP_200_OK)
 
 ###############################
 #          Phones             #
@@ -473,3 +473,196 @@ class ConfirmationSuccess(TemplateView):
     template_name= "confirmation_success.html"
 
 
+##################################
+#       Querellas Routes         #
+##################################
+
+class QuerellaListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Querella.objects.all()
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerellaSerializer
+
+class QuerellaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Querella.objects.all()
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerellaSerializer
+
+class AreaGeograficaListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = AreaGeografica.objects.all()
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = AreaGeograficaSerializer
+
+class AreaGeograficaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AreaGeografica.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = AreaGeograficaSerializer
+
+class TestigoListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Testigo.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = TestigoSerializer
+
+class TestigoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Testigo.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = TestigoSerializer
+
+class PerjudicadoListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Perjudicado.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = PerjudicadoSerializer
+
+class PerjudicadoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Perjudicado.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = PerjudicadoSerializer
+
+class QuerelladoListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Querellado.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerelladoSerializer
+
+class QuerelladoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Querellado.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerelladoSerializer
+
+class OficialesIntervinieronListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = OficialesIntervinieron.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = OficialesIntervinieronSerializer
+
+class OficialesIntervinieronRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = OficialesIntervinieron.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = OficialesIntervinieronSerializer
+
+class SectorListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Sector.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = SectorSerializer
+
+class SectorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Sector.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = SectorSerializer
+
+class QuerellanteListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Querellante.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerellanteSerializer
+
+class QuerellanteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Querellante.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = QuerellanteSerializer
+
+class FormaSeRefirioListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = FormaSeRefirio.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = FormaSeRefirioSerializer
+
+class FormaSeRefirioRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = FormaSeRefirio.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = FormaSeRefirioSerializer
+
+class MedioNotificacionListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = MedioNotificacion.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = MedioNotificacionSerializer
+
+class MedioNotificacionRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = MedioNotificacion.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = MedioNotificacionSerializer
+
+class TipoIncidenteListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = TipoIncidente.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = TipoIncidenteSerializer
+
+class TipoIncidenteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = TipoIncidente.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication,SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = TipoIncidenteSerializer
+
+class SancionArrestoListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = SancionArresto.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = SancionArrestoSerializer
+
+class SancionArrestoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = SancionArresto.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, IsDirector,)
+    serializer_class = SancionArrestoSerializer

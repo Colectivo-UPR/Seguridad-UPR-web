@@ -151,7 +151,7 @@ class OfficialsPhones(models.Model):
 	Sancion_arresto
 """
 
-# class SancionArresto(models.Model):
+class SancionArresto(models.Model):
 	
 # 	VPD 	= '0' # Violacion a la Politica Uso de Drogas
 # 	VPA 	= '1' # Violacion a la Politica Uso de Alcohol
@@ -160,13 +160,13 @@ class OfficialsPhones(models.Model):
 # 	SANCION_ARRESTO_TYPE_CHOICES = (
 # 		)
 
-	# tipo = models.CharField(max_length=1,choices=SANCION_ARRESTO_TYPE_CHOICES,default=OTROS)
+	tipo = models.CharField(max_length=255,blank=False)
 
 """
 	Tipo_Incidente
 """
 
-# class TipoIncidente(models.Model):
+class TipoIncidente(models.Model):
 
 # 	ASEHOM 		= '0' # Asesinato/Homicidio
 # 	HOMN 		= '1' # Homicidio negligente
@@ -207,6 +207,8 @@ class OfficialsPhones(models.Model):
 
 
 # 		)
+	
+	tipo = models.CharField(max_length=100, blank=False)
 
 
 # """
@@ -217,11 +219,140 @@ class OfficialsPhones(models.Model):
 # propiedad, Acecho, Violencia Doméstica, Violencia en citas, otros)
 # """
 
+"""
+	medio_notificacion
+"""
 
+class MedioNotificacion(models.Model):
+
+	tipo = models.CharField(max_length=255,blank=False)
+
+"""
+	forma_se_refirio
+"""
+
+class FormaSeRefirio(models.Model):
+
+	tipo = models.CharField(max_length=255,blank=False)
+
+"""
+	querellante
+"""
+
+class Querellante(models.Model):
+
+	FEMENINO = '0'
+	MASCULINO = '1'
+
+	GENERO_TYPE_CHOICES = (
+		(FEMENINO, 'F'),
+		(MASCULINO, 'M'),
+		)
+
+	id_querella = models.IntegerField(blank=False)
+	nombre = models.CharField(max_length=255,blank=False)
+	direccion_residencial = models.CharField(max_length=300,blank=False)
+	direccion_postal = models.CharField(max_length=300,blank=False)
+	lugar_trabajo = models.CharField(max_length=300,blank=False)
+	tipo_identificacion = models.CharField(max_length=255,blank=False)
+	numero_identificacion = models.CharField(max_length=255,blank=False)
+	tel_trabajo = models.CharField(max_length=30,blank=False)
+	tel_personal = models.CharField(max_length=30,blank=False)
+	sector = models.IntegerField(blank=False)
+	genero = models.CharField(max_length=1, choices=GENERO_TYPE_CHOICES,default=FEMENINO)
+	email = models.EmailField(verbose_name='email address', max_length=255)
+
+"""
+	Sectores
+"""
+class Sector(models.Model):
+
+	sector = models.CharField(max_length=30,blank=False)
+
+"""
+	Oficciales que Intervinieron
+"""
+class OficialesIntervinieron(models.Model):
+	id_querella = models.IntegerField(blank=False)
+	nombre = models.CharField(max_length=255,blank=False)
+	turno = models.CharField(max_length=255,blank=False)
+	numero_placa = models.CharField(max_length=255,blank=False)
+
+"""
+	Querellados
+"""
+
+class Querellado(models.Model):
+
+	id_querella = models.IntegerField(blank=False)
+	nombre = models.CharField(max_length=255,blank=False)
+	direccion_residencial = models.CharField(max_length=300,blank=False)
+	direccion_postal =  models.CharField(max_length=300,blank=False)
+	telefono = models.CharField(max_length=30,blank=False)
+
+"""
+	Perjudicado
+"""
+
+class Perjudicado(models.Model):
+
+	id_querella = models.IntegerField(blank=False)
+	nombre = models.CharField(max_length=255,blank=False)
+	direccion_residencial = models.CharField(max_length=300,blank=False)
+	direccion_postal =  models.CharField(max_length=300,blank=False)
+	telefono = models.CharField(max_length=30,blank=False)
+
+"""
+	Testigo
+"""
+
+class Testigo(models.Model):
+
+	id_querella = models.IntegerField(blank=False)
+	direccion_residencial = models.CharField(max_length=300,blank=False)
+	direccion_postal =  models.CharField(max_length=300,blank=False)
+	telefono = models.CharField(max_length=30,blank=False)
+
+"""
+	Area Geografica
+"""
+class AreaGeografica(models.Model):
+	tipo = models.CharField(max_length=255,blank=False)
 
 """
 	Querellas
 """
 
-#class Querella(models.Model):
+class Querella(models.Model):
+
+	A = 'A'
+	B = 'B'
+	C = 'C'
+
+	AREA_TYPE_CHOICES = (
+		(A, 'A'),
+		(B, 'B'),
+		(C, 'C'),
+		)
+
+	numero_caso = models.IntegerField(blank=False) #a oficiales_intervinieron, a querellados, a perjudicado y a testigo. 
+	fecha_informada = models.DateTimeField('fecha informada', blank=False, default=datetime.now) #(date con hora)
+	medio_notificacion = models.IntegerField(blank=False)
+	hay_fotos = models.BooleanField(blank=False,default=False)
+	official_atendio = models.CharField(max_length=255,blank=False)
+	placa_official =  models.CharField(max_length=255,blank=False)
+	referido_a = models.CharField(max_length=255,blank=False)
+	agente_se_notifico = models.CharField(max_length=255,blank=False)
+	placa_agente = models.CharField(max_length=255,blank=False)
+	numero_caso_policia = models.CharField(max_length=255,blank=False)
+	forma_se_refirio = models.IntegerField(blank=False)
+	accion_tomada = models.TextField(blank=False)
+	fecha_incidente = models.DateTimeField('fecha incidente', blank=False, default=datetime.now)
+	lugar_incidente = models.CharField(max_length=255,blank=False) 
+	area_incidente = models.CharField(max_length=1, choices=AREA_TYPE_CHOICES,default=A)
+	tipo_incidente = models.IntegerField(blank=False)
+	crimen_odio = models.BooleanField(blank=False,default=False)
+	descripcion_incidente = models.TextField(blank=False)
+	sancion_arresto = models.IntegerField(blank=False)
+	area_geografica = models.IntegerField(blank=False)
 

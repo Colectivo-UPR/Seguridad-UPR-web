@@ -92,6 +92,44 @@ urlpatterns = patterns('',
     # Alertas
     url(r'^alerts/', views.AlertList.as_view()),
     url(r'^alerts/(?P<pk>[0-9]+)/$', views.AlertDetail.as_view()),
+
+    # Querellas
+    
+    url(r'^querellas/$', views.QuerellaListCreateAPIView.as_view()),
+    url(r'^querellas/(?P<pk>[0-9]+)/$', views.QuerellaRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/area-geografica/$', views.AreaGeograficaListCreateAPIView.as_view()),
+    url(r'^querella/area-geografica/(?P<pk>[0-9]+)/$', views.AreaGeograficaRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/testigo/$',views.TestigoListCreateAPIView.as_view()),
+    url(r'^querella/testigo/(?P<pk>[0-9]+)/$',views.TestigoRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/perjudicado/$', views.PerjudicadoListCreateAPIView.as_view()),
+    url(r'^querella/perjudicado/(?P<pk>[0-9]+)/$', views.PerjudicadoRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/querellado/$', views.QuerelladoListCreateAPIView.as_view()),
+    url(r'^querella/querellado/(?P<pk>[0-9]+)/$', views.QuerelladoRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/officiales-intervinieron/$', views.OficialesIntervinieronListCreateAPIView.as_view()),
+    url(r'^querella/officiales-intervinieron/(?P<pk>[0-9]+)/$', views.OficialesIntervinieronRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/sector/$', views.SectorListCreateAPIView.as_view()),
+    url(r'^querella/sector/(?P<pk>[0-9]+)/$', views.SectorRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/querellante/$', views.QuerellanteListCreateAPIView.as_view()),
+    url(r'^querella/querellante/(?P<pk>[0-9]+)/$', views.QuerellanteRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/forma-se-refirio/$', views.FormaSeRefirioListCreateAPIView.as_view()),
+    url(r'^querella/forma-se-refirio/(?P<pk>[0-9]+)/$', views.FormaSeRefirioRetrieveUpdateDestroyAPIView.as_view()),
+    
+    url(r'^querella/medio-notificacion/$', views.MedioNotificacionListCreateAPIView.as_view()),
+    url(r'^querella/medio-notificacion/(?P<pk>[0-9]+)/$', views.MedioNotificacionRetrieveUpdateDestroyAPIView.as_view()),
+
+    url(r'^querella/tipo-incidente/$', views.TipoIncidenteListCreateAPIView.as_view()),
+    url(r'^querella/tipo-incidente/(?P<pk>[0-9]+)/$', views.TipoIncidenteRetrieveUpdateDestroyAPIView.as_view()),
+
+    url(r'^querella/sancion-arresto/$', views.SancionArrestoListCreateAPIView.as_view()),
+    url(r'^querella/sancion-arresto/(?P<pk>[0-9]+)/$', views.SancionArrestoRetrieveUpdateDestroyAPIView.as_view()),
     
     # Authenticacion
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
