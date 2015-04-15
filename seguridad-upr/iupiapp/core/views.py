@@ -175,7 +175,7 @@ def staff_permissions(request,user_email):
         
     except KeyError as e:
         # Return Error message
-        
+       
         return Response({"non_field_errors": 'Invalid json keys:values: "is_director": <bool>,"is_shift_manager": <bool>,"is_official": <bool>' % e},status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"details":"ok"}, status=status.HTTP_200_OK)
@@ -484,6 +484,10 @@ class QuerellaListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerellaSerializer
+    paginate_by = None
+    paginate_by_param = 'page_size'
+    # Set MAX results per page
+    max_paginate_by = None
 
 class QuerellaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Querella.objects.all()
@@ -502,7 +506,7 @@ class AreaGeograficaListCreateAPIView(generics.ListCreateAPIView):
 
 class AreaGeograficaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AreaGeografica.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = AreaGeograficaSerializer
@@ -510,7 +514,7 @@ class AreaGeograficaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyA
 class TestigoListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Testigo.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TestigoSerializer
@@ -518,7 +522,7 @@ class TestigoListCreateAPIView(generics.ListCreateAPIView):
 class TestigoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Testigo.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TestigoSerializer
@@ -526,7 +530,7 @@ class TestigoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 class PerjudicadoListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Perjudicado.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = PerjudicadoSerializer
@@ -534,7 +538,7 @@ class PerjudicadoListCreateAPIView(generics.ListCreateAPIView):
 class PerjudicadoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Perjudicado.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = PerjudicadoSerializer
@@ -542,7 +546,7 @@ class PerjudicadoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
 class QuerelladoListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Querellado.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerelladoSerializer
@@ -550,7 +554,7 @@ class QuerelladoListCreateAPIView(generics.ListCreateAPIView):
 class QuerelladoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Querellado.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerelladoSerializer
@@ -558,7 +562,7 @@ class QuerelladoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
 class OficialesIntervinieronListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = OficialesIntervinieron.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = OficialesIntervinieronSerializer
@@ -566,7 +570,7 @@ class OficialesIntervinieronListCreateAPIView(generics.ListCreateAPIView):
 class OficialesIntervinieronRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = OficialesIntervinieron.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = OficialesIntervinieronSerializer
@@ -574,7 +578,7 @@ class OficialesIntervinieronRetrieveUpdateDestroyAPIView(generics.RetrieveUpdate
 class SectorListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Sector.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = SectorSerializer
@@ -582,7 +586,7 @@ class SectorListCreateAPIView(generics.ListCreateAPIView):
 class SectorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Sector.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = SectorSerializer
@@ -590,7 +594,7 @@ class SectorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class QuerellanteListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Querellante.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerellanteSerializer
@@ -598,7 +602,7 @@ class QuerellanteListCreateAPIView(generics.ListCreateAPIView):
 class QuerellanteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Querellante.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerellanteSerializer
@@ -606,7 +610,7 @@ class QuerellanteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
 class FormaSeRefirioListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = FormaSeRefirio.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = FormaSeRefirioSerializer
@@ -614,7 +618,7 @@ class FormaSeRefirioListCreateAPIView(generics.ListCreateAPIView):
 class FormaSeRefirioRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = FormaSeRefirio.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = FormaSeRefirioSerializer
@@ -622,7 +626,7 @@ class FormaSeRefirioRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyA
 class MedioNotificacionListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = MedioNotificacion.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = MedioNotificacionSerializer
@@ -630,7 +634,7 @@ class MedioNotificacionListCreateAPIView(generics.ListCreateAPIView):
 class MedioNotificacionRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = MedioNotificacion.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = MedioNotificacionSerializer
@@ -638,7 +642,7 @@ class MedioNotificacionRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestr
 class TipoIncidenteListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = TipoIncidente.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TipoIncidenteSerializer
@@ -646,7 +650,7 @@ class TipoIncidenteListCreateAPIView(generics.ListCreateAPIView):
 class TipoIncidenteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = TipoIncidente.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TipoIncidenteSerializer
@@ -654,7 +658,7 @@ class TipoIncidenteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAP
 class SancionArrestoListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = SancionArresto.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = SancionArrestoSerializer
@@ -662,7 +666,7 @@ class SancionArrestoListCreateAPIView(generics.ListCreateAPIView):
 class SancionArrestoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = SancionArresto.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = SancionArrestoSerializer

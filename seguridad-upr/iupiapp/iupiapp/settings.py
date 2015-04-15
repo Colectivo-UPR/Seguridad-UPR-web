@@ -146,6 +146,12 @@ CORS_ALLOW_HEADERS = (
 LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/account/email/'
 
+REST_FRAMEWORK = {
+    'PAGINATE_BY': None,                 # Default to 10
+    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
+    'MAX_PAGINATE_BY': 100             # Maximum limit allowed when using `?page_size=xxx`.
+}
+
 try:
     from local_settings import *
 except ImportError:
