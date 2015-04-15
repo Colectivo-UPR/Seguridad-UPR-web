@@ -484,10 +484,14 @@ class QuerellaListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerellaSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('numero_caso',)
+
     paginate_by = None
     paginate_by_param = 'page_size'
     # Set MAX results per page
     max_paginate_by = None
+
 
 class QuerellaRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Querella.objects.all()
@@ -518,6 +522,8 @@ class TestigoListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TestigoSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id_querella')
 
 class TestigoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -534,6 +540,8 @@ class PerjudicadoListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = PerjudicadoSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id_querella')
 
 class PerjudicadoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -550,6 +558,8 @@ class QuerelladoListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerelladoSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id_querella',)
 
 class QuerelladoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -566,6 +576,8 @@ class OficialesIntervinieronListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = OficialesIntervinieronSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id_querella',)
 
 class OficialesIntervinieronRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -598,6 +610,8 @@ class QuerellanteListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,SessionAuthentication)
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = QuerellanteSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('id_querella',)
 
 class QuerellanteRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 

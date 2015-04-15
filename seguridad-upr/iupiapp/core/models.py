@@ -335,13 +335,13 @@ class Querella(models.Model):
 		(C, 'C'),
 		)
 
-	numero_caso = models.IntegerField(blank=False) #a oficiales_intervinieron, a querellados, a perjudicado y a testigo. 
+	numero_caso = models.CharField(max_length=255,blank=False) #a oficiales_intervinieron, a querellados, a perjudicado y a testigo. 
 	fecha_informada = models.DateTimeField('fecha informada', blank=False, default=datetime.now) #(date con hora)
 	medio_notificacion = models.IntegerField(blank=False)
 	hay_fotos = models.BooleanField(blank=False,default=False)
 	official_atendio = models.CharField(max_length=255,blank=False)
 	placa_official =  models.CharField(max_length=255,blank=False)
-	referido_a = models.CharField(max_length=255,blank=False)
+	referido_a = models.CharField(max_length=255,blank=True)
 	agente_se_notifico = models.CharField(max_length=255,blank=False)
 	placa_agente = models.CharField(max_length=255,blank=False)
 	numero_caso_policia = models.CharField(max_length=255,blank=False)

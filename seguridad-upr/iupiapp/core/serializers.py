@@ -206,7 +206,7 @@ class AreaGeograficaSerializer(serializers.ModelSerializer):
     Querella Serializer
 """
 class QuerellaSerializer(serializers.ModelSerializer):
-    
+    referido_a = serializers.CharField(allow_blank=True, max_length=255, required=False)
     class Meta:
         model = Querella
         fields = (
