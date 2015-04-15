@@ -523,7 +523,7 @@ class TestigoListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = TestigoSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('id_querella')
+    search_fields = ('id_querella',)
 
 class TestigoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -541,7 +541,7 @@ class PerjudicadoListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsDirector,)
     serializer_class = PerjudicadoSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('id_querella')
+    search_fields = ('id_querella',)
 
 class PerjudicadoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
