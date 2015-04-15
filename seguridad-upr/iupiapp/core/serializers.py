@@ -129,7 +129,7 @@ class SectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sector
-        fields = ('id', 'sector')
+        fields = ('id', 'tipo')
 
 """
     Oficiales Intervinieron Serializer

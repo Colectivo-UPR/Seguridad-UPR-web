@@ -267,7 +267,7 @@ class Querellante(models.Model):
 """
 class Sector(models.Model):
 
-	sector = models.CharField(max_length=30,blank=False)
+	tipo = models.CharField(max_length=30,blank=False)
 
 """
 	Oficciales que Intervinieron
