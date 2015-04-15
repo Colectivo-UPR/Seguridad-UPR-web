@@ -3,6 +3,7 @@ import json
 
 # django
 from django.views.generic import TemplateView
+from django.db.models import Q
 
 # rest_framework
 from rest_framework.views import APIView
@@ -119,11 +120,12 @@ class UserList(generics.ListAPIView):
     """
     List users models
     """
-    renderer_classes = (renderers.JSONRenderer,)
+    renderer_classes = (renderers.JSONRenderer,renderers.BrowsableAPIRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
-    authentication_classes = (TokenAuthentication,)
-    queryset = AuthUser.objects.filter(is_official= True).exclude(is_staff=True)
-    serializer_class = AuthUserSerializer
+    authentication_classes = (TokenAuthentication, SessionAuthentication,)
+    resultquery = AuthUser.objects.filter(is_official= True) | AuthUser.objects.filter(is_shift_manager=True) | AuthUser.objects.filter(is_director=True)
+    queryset = resultquery.exclude(is_staff=True)
+    serializer_class = AuthUserStaffListSerializer
 
 # Edit Staff Users
 class UserEdit(generics.RetrieveUpdateDestroyAPIView):

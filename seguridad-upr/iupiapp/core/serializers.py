@@ -19,6 +19,11 @@ class AuthUserDetailSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('email',)
 
+class AuthUserStaffListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthUser
+        fields = ('username','email','first_name','last_name','is_director','is_shift_manager','is_official')
+
 
 class IncidentSerializer(serializers.ModelSerializer):
 
