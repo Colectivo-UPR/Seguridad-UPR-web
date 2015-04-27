@@ -193,6 +193,7 @@ class TestigoSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'id_querella',
+            'nombre',
             'direccion_residencial',
             'direccion_postal',
             'telefono'
