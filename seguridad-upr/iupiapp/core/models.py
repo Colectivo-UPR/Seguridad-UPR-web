@@ -91,7 +91,7 @@ def email_confirmed_(request, email_address, **kwargs):
 	Users Incidents  model
 """
 class Incident(models.Model):
-	owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='incidents')
+	user_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='incidents')
 	pub_date = models.DateTimeField('date created', auto_now_add=True)
 	incident_date = models.DateTimeField('incident date', blank=False, default=datetime.now)
 	message = models.TextField()

@@ -323,8 +323,8 @@ class IncidentCreate(generics.CreateAPIView):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
-    def pre_save(self, obj):
-        obj.owner = self.request.user
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user)
 
 class IncidentList(generics.ListAPIView):
     """
@@ -332,7 +332,7 @@ class IncidentList(generics.ListAPIView):
     """
     renderer_classes = (renderers.JSONRenderer,)
     permission_classes = (IsAuthenticated, IsWebAdmin,)
-    authentication_classes  = (TokenAuthentication,)
+    authentication_classes   = (TokenAuthentication,)
     queryset = Incident.objects.all()
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('incident_date',)
@@ -347,6 +347,9 @@ class IncidentDetail(generics.RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
+
+    def pre_save(self, obj):
+        obj.user_id = self.request.user
 
 ###############################
 #          Users              #

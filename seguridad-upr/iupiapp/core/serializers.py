@@ -2,6 +2,8 @@ from rest_framework import serializers
 from core.models import *
 
 class AuthUserSerializer(serializers.ModelSerializer):
+    incidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Incident.objects.all())
+
     class Meta:
         model = AuthUser
         fields = ('id', 'email','first_name','last_name','password')
@@ -27,11 +29,11 @@ class AuthUserStaffListSerializer(serializers.ModelSerializer):
 
 class IncidentSerializer(serializers.ModelSerializer):
 
-    owner = serializers.Field(source='owner.id')
+    user_id = serializers.ReadOnlyField(source='user_id.id')
 
     class Meta:
         model = Incident
-        fields = ('id', 'owner','title','pub_date','incident_date', 'message','faculty','lat','lon')
+        fields = ('id', 'user_id','title','pub_date','incident_date', 'message','faculty','lat','lon')
 
 
 class ReportSerializer(serializers.ModelSerializer):
