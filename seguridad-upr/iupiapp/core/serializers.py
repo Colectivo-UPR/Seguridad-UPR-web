@@ -24,7 +24,7 @@ class AuthUserDetailSerializer(serializers.ModelSerializer):
 class AuthUserStaffListSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
-        fields = ('username','email','first_name','last_name','is_director','is_shift_manager','is_official')
+        fields = ('id','username','email','first_name','last_name','is_director','is_shift_manager','is_official')
 
 
 class IncidentSerializer(serializers.ModelSerializer):
@@ -195,6 +195,7 @@ class TestigoSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'id_querella',
+            'nombre',
             'direccion_residencial',
             'direccion_postal',
             'telefono'

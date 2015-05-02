@@ -308,6 +308,7 @@ class Perjudicado(models.Model):
 
 class Testigo(models.Model):
 
+	nombre = models.CharField(max_length=255,blank=False,default="")
 	id_querella = models.IntegerField(blank=False)
 	direccion_residencial = models.CharField(max_length=300,blank=False)
 	direccion_postal =  models.CharField(max_length=300,blank=False)
