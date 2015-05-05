@@ -2,7 +2,7 @@ from rest_framework import serializers
 from core.models import *
 
 class AuthUserSerializer(serializers.ModelSerializer):
-    incidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Incident.objects.all())
+    # incidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Incident.objects.all())
 
     class Meta:
         model = AuthUser

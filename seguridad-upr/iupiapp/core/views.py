@@ -17,7 +17,7 @@ from rest_framework import status, mixins
 # project
 from core.serializers import *
 from core.models import *
-from core.permissions import IsOwnerOnly,IsWebAdmin, IsDirector
+from core.permissions import IsOwnerOnly,IsWebAdmin, IsDirector, IsStaff
 
 
 ##########################################
@@ -94,6 +94,15 @@ class OfficialsPhonesViewSet(viewsets.ModelViewSet):
 ###############################
 #          Users              #
 ###############################
+# View user info by id
+class UserDetail(generics.RetrieveAPIView):
+    renderer_classes = (renderers.JSONRenderer,)
+    permission_classes = (IsAuthenticated, IsStaff,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = AuthUserSerializer
+    queryset = AuthUser.objects.all()
+
+
 
 # Create Staff Users
 
