@@ -136,6 +136,15 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     queryset = AuthUser.objects.filter(is_official= True).exclude(is_staff=True)
     serializer_class = AuthUserDetailSerializer
 
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+#@permission_classes([IsWebAdmin])
+@renderer_classes([renderers.JSONRenderer])
+def send_alert(request):
+    print request; 
+    return Response({"details":"ok"}, status=status.HTTP_200_OK)
+
+
 # Modify user permission
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])

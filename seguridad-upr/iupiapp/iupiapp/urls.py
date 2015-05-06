@@ -52,6 +52,7 @@ urlpatterns = patterns('',
     url(r'^edit-staff-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
     url(r'^staff-users/$',views.UserList.as_view()),
     url(r'^staff-permissions/(?P<user_email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', views.staff_permissions),
+    url(r'^send-alert/$',views.send_alert),
 
 
     # admin
