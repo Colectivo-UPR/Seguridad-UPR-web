@@ -20,7 +20,7 @@ from rest_framework import status, mixins
 from core.serializers import *
 from core.models import *
 from core.permissions import IsOwnerOnly,IsWebAdmin, IsDirector, IsStaff
-
+from iupiapp import settings
 
 ##########################################
 #           API Models Views             #
@@ -151,15 +151,12 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
-@permission_classes([[IsAuthenticated, IsStaff]])
+@permission_classes([IsAuthenticated, IsStaff])
 @renderer_classes([renderers.JSONRenderer])
 def send_alert(request):
     sns = boto3.client('sns')
     msg = request.POST['msg']
-
-    appArn = "arn:aws:sns:us-east-1:834524553068:app/APNS_SANDBOX/seguridad-uprrp"
-
-    response  = sns.list_endpoints_by_platform_application(PlatformApplicationArn=appArn)
+    response  = sns.list_endpoints_by_platform_application(PlatformApplicationArn=settings.appArn)
     endpoints = response['Endpoints']
 
     for endpoint in endpoints:
