@@ -1,5 +1,7 @@
 # python
 import json
+import boto3
+import awscli
 
 # django
 from django.views.generic import TemplateView
@@ -137,18 +139,31 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AuthUserDetailSerializer
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-#@permission_classes([IsWebAdmin])
+#@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 @renderer_classes([renderers.JSONRenderer])
 def send_alert(request):
-    print request; 
-    return Response({"details":"ok"}, status=status.HTTP_200_OK)
+    sns = boto3.client('sns')
+    msg = request.POST['msg']
 
+    appArn = "arn:aws:sns:us-east-1:834524553068:app/APNS_SANDBOX/seguridad-uprrp"
+
+    response  = sns.list_endpoints_by_platform_application(PlatformApplicationArn=appArn)
+    endpoints = response['Endpoints']
+
+    for endpoint in endpoints:
+        e = endpoint['EndpointArn']
+        post_response = sns.publish(Message=msg, TargetArn=e)
+    
+        if post_response['ResponseMetadata']['HTTPStatusCode'] == 200: 
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # Modify user permission
-@api_view(['POST'])
+@api_view(['GET'])
 @authentication_classes([TokenAuthentication])
-@permission_classes([IsDirector])
+@permission_classes([IsAuthenticated, IsDirector])
 @renderer_classes([renderers.JSONRenderer])
 def staff_permissions(request,user_email):
     """
