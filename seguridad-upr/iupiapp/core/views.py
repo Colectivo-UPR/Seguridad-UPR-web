@@ -150,8 +150,8 @@ class UserEdit(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AuthUserDetailSerializer
 
 @api_view(['POST'])
-#@authentication_classes([TokenAuthentication])
-@permission_classes([AllowAny])
+@authentication_classes([TokenAuthentication])
+@permission_classes([[IsAuthenticated, IsStaff]])
 @renderer_classes([renderers.JSONRenderer])
 def send_alert(request):
     sns = boto3.client('sns')
