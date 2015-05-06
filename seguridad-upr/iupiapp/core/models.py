@@ -91,7 +91,7 @@ def email_confirmed_(request, email_address, **kwargs):
 	Users Incidents  model
 """
 class Incident(models.Model):
-	owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='incidents')
+	user_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='incidents')
 	pub_date = models.DateTimeField('date created', auto_now_add=True)
 	incident_date = models.DateTimeField('incident date', blank=False, default=datetime.now)
 	message = models.TextField()
@@ -267,7 +267,7 @@ class Querellante(models.Model):
 """
 class Sector(models.Model):
 
-	sector = models.CharField(max_length=30,blank=False)
+	tipo = models.CharField(max_length=30,blank=False)
 
 """
 	Oficciales que Intervinieron
@@ -308,6 +308,7 @@ class Perjudicado(models.Model):
 
 class Testigo(models.Model):
 
+	nombre = models.CharField(max_length=255,blank=False,default="")
 	id_querella = models.IntegerField(blank=False)
 	direccion_residencial = models.CharField(max_length=300,blank=False)
 	direccion_postal =  models.CharField(max_length=300,blank=False)
@@ -335,13 +336,13 @@ class Querella(models.Model):
 		(C, 'C'),
 		)
 
-	numero_caso = models.IntegerField(blank=False) #a oficiales_intervinieron, a querellados, a perjudicado y a testigo. 
+	numero_caso = models.CharField(max_length=255,blank=False) #a oficiales_intervinieron, a querellados, a perjudicado y a testigo. 
 	fecha_informada = models.DateTimeField('fecha informada', blank=False, default=datetime.now) #(date con hora)
 	medio_notificacion = models.IntegerField(blank=False)
 	hay_fotos = models.BooleanField(blank=False,default=False)
 	official_atendio = models.CharField(max_length=255,blank=False)
 	placa_official =  models.CharField(max_length=255,blank=False)
-	referido_a = models.CharField(max_length=255,blank=False)
+	referido_a = models.CharField(max_length=255,blank=True)
 	agente_se_notifico = models.CharField(max_length=255,blank=False)
 	placa_agente = models.CharField(max_length=255,blank=False)
 	numero_caso_policia = models.CharField(max_length=255,blank=False)

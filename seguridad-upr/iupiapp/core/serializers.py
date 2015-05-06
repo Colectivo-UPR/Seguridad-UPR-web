@@ -2,6 +2,8 @@ from rest_framework import serializers
 from core.models import *
 
 class AuthUserSerializer(serializers.ModelSerializer):
+    # incidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Incident.objects.all())
+
     class Meta:
         model = AuthUser
         fields = ('id', 'email','first_name','last_name','password')
@@ -19,14 +21,19 @@ class AuthUserDetailSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('email',)
 
+class AuthUserStaffListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthUser
+        fields = ('id','username','email','first_name','last_name','is_director','is_shift_manager','is_official')
+
 
 class IncidentSerializer(serializers.ModelSerializer):
 
-    owner = serializers.Field(source='owner.id')
+    user_id = serializers.ReadOnlyField(source='user_id.id')
 
     class Meta:
         model = Incident
-        fields = ('id', 'owner','title','pub_date','incident_date', 'message','faculty','lat','lon')
+        fields = ('id', 'user_id','title','pub_date','incident_date', 'message','faculty','lat','lon')
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -129,7 +136,7 @@ class SectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sector
-        fields = ('id', 'sector')
+        fields = ('id', 'tipo')
 
 """
     Oficiales Intervinieron Serializer
@@ -188,6 +195,7 @@ class TestigoSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'id_querella',
+            'nombre',
             'direccion_residencial',
             'direccion_postal',
             'telefono'
@@ -206,7 +214,7 @@ class AreaGeograficaSerializer(serializers.ModelSerializer):
     Querella Serializer
 """
 class QuerellaSerializer(serializers.ModelSerializer):
-    
+    referido_a = serializers.CharField(allow_blank=True, max_length=255, required=False)
     class Meta:
         model = Querella
         fields = (

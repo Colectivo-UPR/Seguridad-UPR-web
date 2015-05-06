@@ -24,3 +24,12 @@ class IsDirector(permissions.BasePermission):
 
 	def has_permission(self, request,view):
 		return request.user and request.user.is_director
+
+class IsStaff(permissions.BasePermission):
+	"""
+	Check if the user is a web official
+	"""
+
+	def has_permissions(self,request,view):
+		return request.user and (request.user.is_director or request.user.is_shiftmanager or request.user.is_official)
+		

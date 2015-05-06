@@ -48,6 +48,9 @@ urlpatterns = patterns('',
     url(r'^create-service/$', views.ServiceCreate.as_view()),
     url(r'^edit-service/(?P<pk>[0-9]+)/$', views.ServiceEdit.as_view()),
 
+    # Usuarios
+    url(r'^user/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+
     # Usuarios Staff
     # url(r'^register-staff', views.UserStaff.as_view()),
     url(r'^edit-staff-user/(?P<pk>[0-9]+)/$',views.UserEdit.as_view()),
@@ -89,7 +92,7 @@ urlpatterns = patterns('',
     # Servicios
     url(r'^services/$', views.ServiceList.as_view()),
     url(r'^services/(?P<pk>[0-9]+)/$', views.ServiceDetail.as_view()),
-    
+ 
     # Alertas
     url(r'^alerts/', views.AlertList.as_view()),
     url(r'^alerts/(?P<pk>[0-9]+)/$', views.AlertDetail.as_view()),
