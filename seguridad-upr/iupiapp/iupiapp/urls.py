@@ -1,5 +1,6 @@
 # django
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, include, url
 
 # rest_framework
@@ -149,4 +150,8 @@ urlpatterns = patterns('',
 
     # Docs
     url(r'^docs/', include('rest_framework_swagger.urls')),
+
+    # Password Reset
+    url(r'^', include('django.contrib.auth.urls')),
     )
+urlpatterns += staticfiles_urlpatterns()

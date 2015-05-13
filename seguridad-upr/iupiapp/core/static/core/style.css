@@ -1,0 +1,112 @@
+
+body {
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	margin: 2% 1% 2% 1%;
+}
+
+h1, h2 { 
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+	color: #e70033;
+}
+
+a:hover {
+	color: #e70033; 
+}
+
+table {
+	table-layout: fixed;
+
+}
+
+th {
+	padding-left: 20px; width:25%;
+}
+
+.topbar ul {
+	padding-right: 15.3px;
+	font-weight: bold;
+	border-color: #e70033;
+}
+
+.topbar ul li {
+	display: inline-block;
+}
+
+.navbar-brand {
+	font-weight: bold;
+}
+
+.navbar-right{
+	height: 50px;
+	vertical-align: middle;
+}
+
+.nav li a {
+	height: 50px;
+	vertical-align: middle;
+	padding-top: 15px;
+}
+
+.radio {
+	padding-left: 20px;
+}
+
+.center_form {
+	margin-top: 8%;
+	margin-left: 14%;
+	max-width: 72%;
+}
+
+.center_notice_form {
+	margin: 5%;
+	max-width: 72%;
+}
+
+.full_width_form {
+	margin-top: 4%;
+	/*max-width: 100%;*/
+}
+
+.form_button_height {
+	height: 12px;
+}
+
+.web_notice_header {
+	padding: 1px;
+	width: 300px;
+	color: #e70033;
+	text-align: center;
+	margin: 15% 8% 0 8%;
+	/*border-top-left-radius: 10px;*/
+	border-top-right-radius: 10px;
+	border-top: 1px solid #e70033;
+	border-left: 1px solid #e70033;
+	border-right: 1px solid #e70033;
+	background-color: #efefef;
+}
+
+.web_notice_body {
+	margin: 0% 8% 0% 8%;
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	/*border-bottom-right-radius: 10px;*/
+	border: 1px solid #e70033;
+	background-color: #efefef;
+}
+
+.web_notice_body p {
+	margin: 5%;
+}
+
+.in_site {
+	margin-top: 8%;
+}
+
+

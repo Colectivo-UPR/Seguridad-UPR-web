@@ -115,6 +115,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(
+        BASE_DIR,
+        'static',
+    ),
+)
+
 # Templates directory
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 
@@ -144,6 +151,7 @@ CORS_ALLOW_HEADERS = (
     )
 
 LOGIN_URL = '/account/login/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/account/login/' 
 LOGIN_REDIRECT_URL = '/account/email/'
 
 REST_FRAMEWORK = {

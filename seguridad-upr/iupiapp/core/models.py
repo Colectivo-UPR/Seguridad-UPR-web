@@ -144,7 +144,7 @@ class Alert(models.Model):
 """
 class OfficialsPhones(models.Model):
 	official = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='phone', null=True)
-	phone_number = models.CharField(max_length=10, blank=False, default='')
+	phone_number = models.CharField(max_length=30, blank=False, default='')
 
 
 """
